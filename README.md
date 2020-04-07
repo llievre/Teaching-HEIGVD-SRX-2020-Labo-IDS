@@ -286,7 +286,7 @@ Vous pouvez aussi utiliser des captures Wireshark ou des fichiers snort.log.xxxx
 
 ---
 
-**Reponse :**  
+**Reponse :**  Ce sont des modules d'extensions qui permettent à l'utilisateur d'ajouter des fonctionnalités comme modifier, détecter les paquets, etc...
 
 ---
 
@@ -294,7 +294,7 @@ Vous pouvez aussi utiliser des captures Wireshark ou des fichiers snort.log.xxxx
 
 ---
 
-**Reponse :**  
+**Reponse :**  Ce message n'est pas apparu chez moi mais j'imagine que c'est parce que nous n'avons configuré aucun préprocesseurs pour l'instant.
 
 ---
 
@@ -310,7 +310,7 @@ alert tcp any any -> any any (msg:"Mon nom!"; content:"Rubinstein"; sid:4000015;
 
 ---
 
-**Reponse :**  
+**Reponse :**  La règle va faire une alerte dès qu'un paquet TCP contiendra le mot "Rubinstein" dans son contenu. Les "any" indiquent que les paquets peuvent venir de n'importe quelle adresses.
 
 ---
 
@@ -322,19 +322,25 @@ sudo snort -c myrules.rules -i eth0
 
 **Question 4: Que voyez-vous quand le logiciel est lancé ? Qu'est-ce que tous les messages affichés veulent dire ?**
 
+
+
+**Reponse :** Le logiciel  est en attente sans problème. Le terminal n'affiche rien mais le fichier alert se remplit.
+
+![](/home/loic/Documents/SRX/Labo3/Teaching-HEIGVD-SRX-2020-Labo-IDS/images/q4_snort.png)
+
+
+
 ---
 
-**Reponse :**  
-
----
-
-Aller à un site web contenant dans son text votre nom ou votre mot clé que vous avez choisi (il faudra chercher un peu pour trouver un site en http...).
+Aller à un site web contenant dans son text votre nom ou votre mot clé que vous avez choisi (il faudra chercher un peu pour trouver un site en http...).y
 
 **Question 5: Que voyez-vous sur votre terminal quand vous visitez le site ?**
 
 ---
 
-**Reponse :**  
+**Reponse :**  Dans le terminal il n'y a rien du tout mais le fichier alert se remplit. La règle a été crée dans le but d'intercepter le mot kali.
+
+![](/home/loic/Documents/SRX/Labo3/Teaching-HEIGVD-SRX-2020-Labo-IDS/images/q5_http.png)
 
 ---
 
@@ -344,7 +350,11 @@ Arrêter Snort avec `CTRL-C`.
 
 ---
 
-**Reponse :**  
+**Reponse :**  On y voit quelques informations comme la durée du test.
+
+Une liste de protocoles ainsi que le nombre de trames interceptées par protocole.
+
+En dessous on y voit les alertes levées et d'autres informations sur ce qui a été soulevé par les règles.
 
 ---
 
@@ -357,8 +367,29 @@ Aller au répertoire /var/log/snort. Ouvrir le fichier `alert`. Vérifier qu'il 
 
 **Reponse :**  
 
----
+![](/home/loic/Documents/SRX/Labo3/Teaching-HEIGVD-SRX-2020-Labo-IDS/images/q7_alert.png)
 
+L'alerte va être décrite ligne par ligne:
+
+1. `[**] [1:4000015:1] Mon nom! [**]` : C'est ce qui permet d'identifier la règle parmi les autres. on y remarque qu'elle possède le nom que nous lui avons donné ("Mon nom!") ainsi que son SID.
+2. `[Priority: 0]` : C'est la priorité donnée à l'alerte. Ici le 0 est donné par défaut car nous n'avons rien configuré.
+3. `04/06-15:52:24.677012 192.124.249.19:80 -> 10.0.2.15` : Cette ligne est à séparer en 2 informations distinctes:
+   1. On y voit la date et l'heure de la création de la l’alerte
+   2. On y remarque l'adresse IP source et de destination
+4. `TCP TTL:64 TOS:0x0 ID:19276 IpLen:20 DgmLen:416` : Ligne à séparer en 6 informations distinctes qui concernent toute la trame analysée :
+   1. `TCP` : le protocol de la trame
+   2. `TTL:64` : Time to live, le temps avant la "mort" du paquet
+   3. `TOS:0x0` : Type of service
+   4. `ID:19276` : L'ID de la trame
+   5. `IpLen:20` : la taille de l'entête IP de la trame
+   6. `DmgLen:416` : La taille de la trame
+5. `***AP*** Seq: 0x15D1F002 Ack: 0xD634A59E Win: 0xFFFF TcpLen: 20` : A découper en 4 parties distinctes:
+   1. `Seq: 0x15D1F002` : Le numéro de séquence
+   2. `Ack: 0xD634A59E` : le numéro du ACK d'aquitement
+   3. `Win: 0xFFFF` : la taille de la fenêtre de congestion
+   4. `TcpLen: 20` : la taille de l'entête TCP
+
+---
 
 --
 
@@ -372,6 +403,14 @@ Ecrire une règle qui journalise (sans alerter) un message à chaque fois que Wi
 
 **Reponse :**  
 
+La règle est : log tcp 10.0.2.15 any -> 91.198.174.192 any (msg: "Mon wiki!",sid:1000002; rev:1;)
+
+![](/home/loic/Documents/SRX/Labo3/Teaching-HEIGVD-SRX-2020-Labo-IDS/images/q8_wiki.png)
+
+Le message a été journalisé dans le fichier /var/log/snort/snort.log.1586186589
+
+Les transactions ACK ont été loguées avec cette règle.
+
 ---
 
 --
@@ -384,38 +423,39 @@ Ecrire une règle qui alerte à chaque fois que votre système reçoit un ping d
 
 ---
 
-**Reponse :**  
+**Reponse :**
+
+![](/home/loic/Documents/SRX/Labo3/Teaching-HEIGVD-SRX-2020-Labo-IDS/images/q9_ip.png)
+
+L'adresse IP change ici car la machine est passée en mode bridge.  
 
 ---
-
 
 **Question 10: Comment avez-vous fait pour que ça identifie seulement les pings entrants ?**
 
 ---
 
-**Reponse :**  
+**Reponse :**  On utilise l'argument "itype" qui permet de n'avoir que les icmp de type 8. Comme dans le précédent laboratoire Firewall qui nous permettait de savoir quel type laisser passer. De plus on cherche à identifier que les paquets dirigés sur l'adresse IP de notre machine de test.
 
 ---
-
 
 **Question 11: Où le message a-t-il été journalisé ?**
 
 ---
 
-**Reponse :**  
+**Reponse :**  Les alertes sont journalisées dans le fichier /var/log/snort/alert
 
 ---
-
 
 **Question 12: Qu'est-ce qui a été journalisé ?**
 
 ---
 
-**Reponse :**  
+**Reponse :**  ![](/home/loic/Documents/SRX/Labo3/Teaching-HEIGVD-SRX-2020-Labo-IDS/images/q12_alert_ping.png)
 
 ---
 
---
+
 
 ### Detecter les ping dans les deux sens
 
@@ -425,10 +465,13 @@ Modifier votre règle pour que les pings soient détectés dans les deux sens.
 
 ---
 
-**Reponse :**  
+**Reponse :**  On utilise l'opérateur <> pour indiquer que nous voulons les pings dans les deux sens.
+
+De cette manière on détectera les ping dans les deux sens mais seulement les requêtes ping, les réponses ne seront pas en alertes. Si nous voulons les voir, il faut enlever le paramètre "itype" pour autoriser tous les types de ICMP.
+
+![](/home/loic/Documents/SRX/Labo3/Teaching-HEIGVD-SRX-2020-Labo-IDS/images/q13_rule.png)
 
 ---
-
 
 --
 
@@ -440,16 +483,21 @@ Essayer d'écrire une règle qui Alerte qu'une tentative de session SSH a été 
 
 ---
 
-**Reponse :**  
+**Reponse :**  On crée une alerte sur TCP et le port 22 en indiquant l'adresse IP de la machine.
+
+![](images/q14_rule.png)
+
+
 
 ---
-
 
 **Question 15: Montrer le message d'alerte enregistré dans le fichier d'alertes.** 
 
 ---
 
-**Reponse :**  
+**Reponse :**  La machine Kali n'a pas de serveur SSH installé mais nous avons tenté de nous connecter dessus quand même et avons reçu le message d'alerte suivant qui montre que la tentative a été interceptée :
+
+![](/home/loic/Documents/SRX/Labo3/Teaching-HEIGVD-SRX-2020-Labo-IDS/images/q15_alerteSSH.png)
 
 ---
 
@@ -463,7 +511,9 @@ Lancer Wireshark et faire une capture du trafic sur l'interface connectée au br
 
 ---
 
-**Reponse :**  
+**Reponse :**  On utilise l'argument `-r`. Donc `sudo snort -r file.pcap`
+
+![](images/q16_snortDump.png)
 
 ---
 
@@ -473,7 +523,7 @@ Utiliser l'option correcte de Snort pour analyser le fichier de capture Wireshar
 
 ---
 
-**Reponse :**  
+**Reponse :**  Le résultat est le même. Snort va faire l'analyse du fichier comme si c'était le réseau.
 
 ---
 
@@ -481,7 +531,7 @@ Utiliser l'option correcte de Snort pour analyser le fichier de capture Wireshar
 
 ---
 
-**Reponse :**  
+**Reponse :**  Oui, il va faire comme si c'était le réseau.
 
 ---
 
@@ -495,7 +545,9 @@ Faire des recherches à propos des outils `fragroute` et `fragtest`.
 
 ---
 
-**Reponse :**  
+**Reponse :**  `fragroute` permet d’intercepter, modifier et réécrire le trafic vers un hôte particulier tandis que `fragtest` propose une batterie de tests pour plusieurs protocoles.
+
+https://tools.kali.org/information-gathering/fragroute
 
 ---
 
@@ -504,16 +556,17 @@ Faire des recherches à propos des outils `fragroute` et `fragtest`.
 
 ---
 
-**Reponse :**  
+**Reponse :**  Ils permettent de tenter d'échapper à la vigilance de snort ou d’autres IDS dans le but de se cacher.
 
 ---
-
 
 **Question 22: Qu'est-ce que le `Frag3 Preprocessor` ? A quoi ça sert et comment ça fonctionne ?**
 
 ---
 
-**Reponse :**  
+**Reponse :**   C'est un module qui permet de fragmenter les paquets.
+
+https://www.snort.org/faq/readme-frag3
 
 ---
 
@@ -532,7 +585,6 @@ Reprendre l'exercice de la partie [Trouver votre nom](#trouver-votre-nom-). Essa
 
 Modifier le fichier `myrules.rules` pour que snort utiliser le `Frag3 Preprocessor` et refaire la tentative.
 
-
 **Question 24: Quel est le résultat ?**
 
 ---
@@ -541,21 +593,22 @@ Modifier le fichier `myrules.rules` pour que snort utiliser le `Frag3 Preprocess
 
 ---
 
-
 **Question 25: A quoi sert le `SSL/TLS Preprocessor` ?**
 
 ---
 
-**Reponse :**  
+**Reponse :**  Permet de décoder le trafic SSL/TLS et détermine si il doit l'inspecter ou non.
+http://manual-snort-org.s3-website-us-east-1.amazonaws.com/node17.html#SECTION003214000000000000000
 
 ---
-
 
 **Question 26: A quoi sert le `Sensitive Data Preprocessor` ?**
 
 ---
 
-**Reponse :**  
+**Reponse :**  Il sert à détecter des informations personnellements identifiables dans les trames comme des numéros de téléphone, des numéros de cartes de crédits, des emails, etc...
+
+https://www.snort.org/faq/readme-sensitive_data
 
 ---
 
@@ -566,9 +619,8 @@ Modifier le fichier `myrules.rules` pour que snort utiliser le `Frag3 Preprocess
 
 ---
 
-**Reponse :**  
+**Reponse :**  Snort semble vraiment puissant et possède une énorme flexibilité grâce aux préprocesseurs. Néanmoins ce n'est pas toujours très facile d'accès et l'installation s'est avérée laborieuse.
 
 ---
-
 
 <sub>This guide draws heavily on http://cs.mvnu.edu/twiki/bin/view/Main/CisLab82014</sub>
