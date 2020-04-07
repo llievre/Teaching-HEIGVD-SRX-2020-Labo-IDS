@@ -326,7 +326,7 @@ sudo snort -c myrules.rules -i eth0
 
 **Reponse :** Le logiciel  est en attente sans problème. Le terminal n'affiche rien mais le fichier alert se remplit.
 
-![](/home/loic/Documents/SRX/Labo3/Teaching-HEIGVD-SRX-2020-Labo-IDS/images/q4_snort.png)
+![](images/q4_snort.png)
 
 
 
@@ -340,7 +340,7 @@ Aller à un site web contenant dans son text votre nom ou votre mot clé que vou
 
 **Reponse :**  Dans le terminal il n'y a rien du tout mais le fichier alert se remplit. La règle a été crée dans le but d'intercepter le mot kali.
 
-![](/home/loic/Documents/SRX/Labo3/Teaching-HEIGVD-SRX-2020-Labo-IDS/images/q5_http.png)
+![](images/q5_http.png)
 
 ---
 
@@ -367,7 +367,7 @@ Aller au répertoire /var/log/snort. Ouvrir le fichier `alert`. Vérifier qu'il 
 
 **Reponse :**  
 
-![](/home/loic/Documents/SRX/Labo3/Teaching-HEIGVD-SRX-2020-Labo-IDS/images/q7_alert.png)
+![](images/q7_alert.png)
 
 L'alerte va être décrite ligne par ligne:
 
@@ -405,7 +405,7 @@ Ecrire une règle qui journalise (sans alerter) un message à chaque fois que Wi
 
 La règle est : log tcp 10.0.2.15 any -> 91.198.174.192 any (msg: "Mon wiki!",sid:1000002; rev:1;)
 
-![](/home/loic/Documents/SRX/Labo3/Teaching-HEIGVD-SRX-2020-Labo-IDS/images/q8_wiki.png)
+![](images/q8_wiki.png)
 
 Le message a été journalisé dans le fichier /var/log/snort/snort.log.1586186589
 
@@ -425,7 +425,7 @@ Ecrire une règle qui alerte à chaque fois que votre système reçoit un ping d
 
 **Reponse :**
 
-![](/home/loic/Documents/SRX/Labo3/Teaching-HEIGVD-SRX-2020-Labo-IDS/images/q9_ip.png)
+![](images/q9_ip.png)
 
 L'adresse IP change ici car la machine est passée en mode bridge.  
 
@@ -451,7 +451,7 @@ L'adresse IP change ici car la machine est passée en mode bridge.
 
 ---
 
-**Reponse :**  ![](/home/loic/Documents/SRX/Labo3/Teaching-HEIGVD-SRX-2020-Labo-IDS/images/q12_alert_ping.png)
+**Reponse :**  ![](images/q12_alert_ping.png)
 
 ---
 
@@ -469,7 +469,7 @@ Modifier votre règle pour que les pings soient détectés dans les deux sens.
 
 De cette manière on détectera les ping dans les deux sens mais seulement les requêtes ping, les réponses ne seront pas en alertes. Si nous voulons les voir, il faut enlever le paramètre "itype" pour autoriser tous les types de ICMP.
 
-![](/home/loic/Documents/SRX/Labo3/Teaching-HEIGVD-SRX-2020-Labo-IDS/images/q13_rule.png)
+![](images/q13_rule.png)
 
 ---
 
@@ -497,7 +497,7 @@ Essayer d'écrire une règle qui Alerte qu'une tentative de session SSH a été 
 
 **Reponse :**  La machine Kali n'a pas de serveur SSH installé mais nous avons tenté de nous connecter dessus quand même et avons reçu le message d'alerte suivant qui montre que la tentative a été interceptée :
 
-![](/home/loic/Documents/SRX/Labo3/Teaching-HEIGVD-SRX-2020-Labo-IDS/images/q15_alerteSSH.png)
+![](images/q15_alerteSSH.png)
 
 ---
 
