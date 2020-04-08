@@ -565,7 +565,7 @@ https://tools.kali.org/information-gathering/fragroute
 ---
 
 **Reponse :**   C'est un module qui permet de recontruire les paquets qui ont subi une fragmentation.
-Ce module est dit "target based" car il modélise les cibles potentielles du réseau au lieu de modéliser les protocoles et de chercher des attaques à l'intérieur. La connaissance des hotes cibles potentiels par l'IDS permet de protéger le réseau plus efficacement contre certains types d'attaques.
+Ce module est dit "target based" car il modélise les cibles potentielles du réseau au lieu de modéliser les protocoles et de chercher des attaques à l'intérieur. La connaissance des hotes cibles potentiels par l'IDS permet de protéger le réseau plus efficacement contre certaines attaques.
 https://www.snort.org/faq/readme-frag3
 
 ---
@@ -581,7 +581,8 @@ Reprendre l'exercice de la partie [Trouver votre nom](#trouver-votre-nom-). Essa
 **Reponse :**  
 
 ---
-Aucune alerte n'est lancée.
+Après avoir lancé fragroute on s'attend à ce que nos paquets ne soient pas détectés...mais ce n'est pas le cas...
+![](images/fragrout not work.png)
 
 Modifier le fichier `myrules.rules` pour que snort utiliser le `Frag3 Preprocessor` et refaire la tentative.
 
@@ -592,6 +593,9 @@ Modifier le fichier `myrules.rules` pour que snort utiliser le `Frag3 Preprocess
 **Reponse :**  
 
 ---
+Frag3 est bien lancé. Mais étant donné que les paquets ne sont même pas fragroutés d'abord, il ne détecte pas de fragments...
+![](images/frag3 does not work.png)
+
 
 **Question 25: A quoi sert le `SSL/TLS Preprocessor` ?**
 
