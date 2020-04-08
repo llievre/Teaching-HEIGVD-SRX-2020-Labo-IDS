@@ -556,7 +556,7 @@ https://tools.kali.org/information-gathering/fragroute
 
 ---
 
-**Reponse :**  Ils permettent de tenter d'échapper à la vigilance de snort ou d’autres IDS dans le but de se cacher.
+**Reponse :**  Ils permettent de tenter d'échapper à la vigilance de snort ou d’autres IDS dans le but de se cacher. Pour échapper à la vigilence de snort, fragroute permet à l'attaquant de fragmenter les paquets en plusieurs morceaux avant de les envoyer à l'hôte cible. Il peut aussi dupliquer les paquets, les envoyer avec un certain delay les envoyer dans le désordre pour induire l'IDS en erreur.
 
 ---
 
@@ -564,8 +564,8 @@ https://tools.kali.org/information-gathering/fragroute
 
 ---
 
-**Reponse :**   C'est un module qui permet de fragmenter les paquets.
-
+**Reponse :**   C'est un module qui permet de recontruire les paquets qui ont subi une fragmentation.
+Ce module est dit "target based" car il modélise les cibles potentielles du réseau au lieu de modéliser les protocoles et de chercher des attaques à l'intérieur. La connaissance des hotes cibles potentiels par l'IDS permet de protéger le réseau plus efficacement contre certains types d'attaques.
 https://www.snort.org/faq/readme-frag3
 
 ---
@@ -581,7 +581,7 @@ Reprendre l'exercice de la partie [Trouver votre nom](#trouver-votre-nom-). Essa
 **Reponse :**  
 
 ---
-
+Aucune alerte n'est lancée.
 
 Modifier le fichier `myrules.rules` pour que snort utiliser le `Frag3 Preprocessor` et refaire la tentative.
 
