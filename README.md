@@ -581,8 +581,10 @@ Reprendre l'exercice de la partie [Trouver votre nom](#trouver-votre-nom-). Essa
 **Reponse :**  
 
 ---
-Après avoir lancé fragroute on s'attend à ce que nos paquets ne soient pas détectés...mais ce n'est pas le cas...
-![](images/fragrout not work.png)
+Après avoir lancé fragroute on s'attend à ce que nos paquets ne soient pas détectés...mais ce n'est pas le cas.
+
+
+![](images/fragrout.png)
 
 Modifier le fichier `myrules.rules` pour que snort utiliser le `Frag3 Preprocessor` et refaire la tentative.
 
@@ -593,8 +595,11 @@ Modifier le fichier `myrules.rules` pour que snort utiliser le `Frag3 Preprocess
 **Reponse :**  
 
 ---
-Frag3 est bien lancé. Mais étant donné que les paquets ne sont même pas fragroutés d'abord, il ne détecte pas de fragments...
-![](images/frag3 does not work.png)
+Frag3 est bien lancé. Mais étant donné que les paquets ne sont même pas fragroutés d'abord, il ne détecte pas de fragments à reconstituer.
+
+
+
+![](images/frag3.png)
 
 
 **Question 25: A quoi sert le `SSL/TLS Preprocessor` ?**
